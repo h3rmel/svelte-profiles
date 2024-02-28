@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .app {
+        @apply w-full min-h-screen overflow-hidden bg-backgroundSecondary;
+    }
+
+    .container {
+        @apply max-w-[1200px] w-full mx-auto;
+    }
+}
