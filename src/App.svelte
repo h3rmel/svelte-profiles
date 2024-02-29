@@ -85,6 +85,7 @@
   }
 </script>
 
+<!-- TODO: Adicionar botões suspensos: GitHub, Meu Perfil, etc. -->
 <div class="container mt-8 flex flex-col gap-8 items-center">
   <!-- Heading -->
   <hgroup class="text-center">
