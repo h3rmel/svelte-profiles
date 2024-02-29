@@ -27,7 +27,7 @@
           </div>
         </div>
         <!-- Homepage + Link -->
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-end w-full">
           <!-- Homepage (if exists) -->
           {#if repo.homepage}
             <div class="flex flex-col items-start gap-1">
