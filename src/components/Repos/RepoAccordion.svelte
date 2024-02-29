@@ -7,8 +7,8 @@
 <article class="accordion">
   <!-- Visible part -->
   <input type="checkbox" id={`toggle-${repo.id}`} class="accordion-toggle" />
-  <label for={`toggle-${repo.id}`} class="accordion-title">
-    <span>{repo.name}</span>
+  <label for={`toggle-${repo.id}`} class="accordion-title items-start">
+    <span class="text-lg kbd py-0 px-2">{repo.name}</span>
     <span class="text-sm text-content3 font-normal">{repo.description}</span>
   </label>
   <!-- Content -->

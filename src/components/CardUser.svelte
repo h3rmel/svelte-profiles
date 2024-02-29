@@ -12,7 +12,7 @@
     <hgroup>
       <h2 class="text-2xl">{user.name}</h2>
       <p
-        class="text-xs text-neutral max-w-[40ch] whitespace-nowrap text-ellipsis overflow-hidden"
+        class="text-xs text-neutral sm:max-w-[40ch] max-w-[36ch] whitespace-nowrap text-ellipsis overflow-hidden"
       >
         {user.bio}
       </p>

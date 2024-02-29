@@ -3,15 +3,15 @@
 </script>
 
 <article
-  class="card border-[1px] border-border w-[384px] h-[320px]"
+  class="card border-[1px] border-border max-w-[384px] h-[320px]"
   id={`${repo.name}-${repo.id}`}
 >
   <!-- Card Header -->
   <section class="card-header flex-col items-start gap-1 p-4 pb-0">
-    <h3 class="text-xl font-mono kbd py-0 px-1">
+    <h3 class="text-xl font-mono kbd py-0 px-2">
       {repo.name}
     </h3>
-    <p class="text-xs text-neutral ml-[2px]">
+    <p class="text-xs text-neutral">
       {repo.description}
     </p>
   </section>
@@ -41,7 +41,7 @@
   </section>
   <div class="divider my-0" />
   <!-- Card Footer -->
-  <section class="card-footer h-max items-end px-4">
+  <section class="card-footer h-max items-end px-4 pb-4 sm:py-0">
     <a href={repo.html_url} target="_blank" class="link link-ghost-primary">
       Ir para repositório
     </a>

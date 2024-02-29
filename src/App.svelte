@@ -4,7 +4,11 @@
   import CardUser from "@/components/CardUser.svelte";
   import ReposGrid from "@/components/Repos/ReposGrid.svelte";
   import ReposList from "@/components/Repos/ReposList.svelte";
-  import { searchUser, searchUserRepos } from "@/services/user";
+  
+  // Switch to Local services if the request for GitHub API exceeded.
+  import { searchUserLocal, searchUserReposLocal } from "@/services/index";
+  // import { searchUser, searchUserRepos } from "@/services/index";
+
   import { applyRepoMask, applyUserMask } from "@/utils/index";
 
   // Datas
@@ -26,13 +30,16 @@
 
     try {
       const [userResponse, reposResponse] = await Promise.all([
-        searchUser(searchQuery),
-        searchUserRepos(searchQuery),
+        searchUserLocal(),
+        searchUserReposLocal(),
       ]);
 
       if (userResponse.ok && reposResponse.ok) {
         const dataUser: GitHubUser = await userResponse.json();
         const dataRepos: GitHubRepository[] = await reposResponse.json();
+
+        console.log(dataUser);
+        console.log(dataRepos);
 
         user = applyUserMask(dataUser);
 
