@@ -6,7 +6,7 @@
 
 @layer components {
     .app {
-        @apply w-full min-h-screen overflow-hidden bg-backgroundSecondary;
+        @apply w-full min-h-screen overflow-hidden bg-backgroundSecondary scroll-smooth;
     }
 
     .container {

@@ -1,5 +1,15 @@
-TypeScript
 interface User {
+  avatar_url: string;
+  name: string;
+  bio: string;
+  html_url: string;
+  login: string;
+  followers: number;
+  public_repos: number;
+  public_gists: number;
+}
+
+interface GitHubUser {
   login: string;
   id: number;
   node_id: string;

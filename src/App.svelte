@@ -2,11 +2,17 @@
   // Imports
   import ErrorIcon from "@/assets/ErrorIcon.svelte";
   import CardUser from "@/components/CardUser.svelte";
-  import { searchUser } from "@/services/user";
+  import ReposGrid from "@/components/Repos/ReposGrid.svelte";
+  import ReposList from "@/components/Repos/ReposList.svelte";
+  import { searchUser, searchUserRepos } from "@/services/user";
+  import { applyRepoMask, applyUserMask } from "@/utils/index";
 
-  let searchQuery: string = "";
-
+  // Datas
   let user: User | null = null;
+  let repos: (Repository | undefined)[] | null = null;
+
+  // Queries
+  let searchQuery: string = "";
 
   // Request behavior
   let isLoading: boolean = false;
@@ -19,36 +25,56 @@
     fetchError = { status: 0, message: "" };
 
     try {
-      const response = await searchUser(searchQuery, {
-        signal: abortController.signal,
-      });
+      const [userResponse, reposResponse] = await Promise.all([
+        searchUser(searchQuery),
+        searchUserRepos(searchQuery),
+      ]);
 
-      if (response.ok) {
-        const data: User = await response.json();
+      if (userResponse.ok && reposResponse.ok) {
+        const dataUser: GitHubUser = await userResponse.json();
+        const dataRepos: GitHubRepository[] = await reposResponse.json();
 
-        user = data as User;
+        user = applyUserMask(dataUser);
+
+        repos = dataRepos.map((repo: GitHubRepository) => {
+          return applyRepoMask(repo, user?.login ?? "");
+        });
 
         return;
       }
 
-      const data: GitHubErrorResponse = await response.json();
+      if (!userResponse.ok && !reposResponse.ok) {
+        const dataError: GitHubErrorResponse = await userResponse.json();
 
-      fetchError = {
-        status: response.status,
-        message: data.message,
-      };
+        fetchError = {
+          status: userResponse.status,
+          message: dataError.message,
+        };
 
-      setTimeout(() => {
-        fetchError = { status: 0, message: "" };
-      }, 3000);
+        user = null;
+        repos = null;
 
-      return Promise.reject();
+        setTimeout(() => {
+          fetchError = { status: 0, message: "" };
+        }, 3000);
+
+        return Promise.reject();
+      }
     } catch (error) {
       if (abortController.signal.aborted) console.error("Request was aborted.");
       else console.error("Request failed.");
+
+      console.error(error);
     } finally {
       isLoading = false;
     }
+  }
+
+  // View behavior
+  $: viewType = "grid";
+
+  function handleViewTypeChange(value: string) {
+    viewType = value;
   }
 </script>
 
@@ -90,5 +116,29 @@
   <!-- User -->
   {#if user}
     <CardUser {user} />
+  {/if}
+  <!-- Repos -->
+  {#if repos}
+    <section class="flex items-center gap-2">
+      <p class="text-base">Visão:</p>
+      <div class="tabs tabs-boxed flex-nowrap gap-1">
+        <button
+          class={`tab ${viewType === "grid" && "tab-active"}`}
+          on:click={() => handleViewTypeChange("grid")}>Grid</button
+        >
+        <button
+          class={`tab ${viewType === "list" && "tab-active"}`}
+          on:click={() => handleViewTypeChange("list")}>List</button
+        >
+      </div>
+    </section>
+    <!-- Grid view -->
+    {#if viewType === "grid"}
+      <ReposGrid {repos} />
+    {/if}
+    <!-- List view -->
+    {#if viewType === "list"}
+      <ReposList {repos} />
+    {/if}
   {/if}
 </div>
