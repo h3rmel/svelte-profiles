@@ -1,4 +1,4 @@
-export function applyRepoMask(
+export function applyReposMask(
   repository: GitHubRepository,
   userLogin: string
 ): Repository | undefined {
